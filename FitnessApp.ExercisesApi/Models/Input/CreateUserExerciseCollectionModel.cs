@@ -1,9 +1,9 @@
-﻿using FitnessApp.Abstractions.Models.Collection;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using FitnessApp.Common.Abstractions.Models.Collection;
 
 namespace FitnessApp.ExercisesApi.Models.Input
 {
-    public class CreateUserExercisesModel : ICreateCollectionModel
+    public class CreateUserExerciseCollectionModel : ICreateCollectionModel
     {
         public string UserId { get; set; }
         public Dictionary<string, IEnumerable<ICollectionItemModel>> Collection { get; set; }

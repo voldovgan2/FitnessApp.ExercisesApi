@@ -1,9 +1,9 @@
-﻿using FitnessApp.Abstractions.Db.Entities.Collection;
-using System;
+﻿using System;
+using FitnessApp.Common.Abstractions.Db.Entities.Collection;
 
 namespace FitnessApp.ExercisesApi.Data.Entities
 {
-    public class ExerciseItemEntity : ICollectionItemEntity
+    public class ExerciseCollectionItemEntity : ICollectionItemEntity
     {
         public string Id { get; set; }
         public string Name { get; set; }

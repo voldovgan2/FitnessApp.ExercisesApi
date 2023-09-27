@@ -1,32 +1,20 @@
-﻿using FitnessApp.Abstractions.Db.Configuration;
-using FitnessApp.Abstractions.Db.Entities.Collection;
-using FitnessApp.Abstractions.Db.Repository.Collection;
-using FitnessApp.Abstractions.Models.Collection;
-using FitnessApp.Serializer.JsonMapper;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using AutoMapper;
+using FitnessApp.Common.Abstractions.Db.DbContext;
+using FitnessApp.Common.Abstractions.Db.Repository.Collection;
+using FitnessApp.ExercisesApi.Data.Entities;
+using FitnessApp.ExercisesApi.Models.Input;
+using FitnessApp.ExercisesApi.Models.Output;
 
 namespace FitnessApp.ExercisesApi.Data
 {
-    public class ExercisesRepository<Entity, CollectionItemEntity, Model, CollectionItemModel, CreateModel, UpdateModel>
-        : CollectionRepository<Entity, CollectionItemEntity, Model, CollectionItemModel, CreateModel, UpdateModel>,
-        IExercisesRepository<Entity, CollectionItemEntity, Model, CollectionItemModel, CreateModel, UpdateModel>
-        where Entity : ICollectionEntity
-        where CollectionItemEntity : ICollectionItemEntity
-        where Model : ICollectionModel
-        where CollectionItemModel : ISearchableCollectionItemModel
-        where CreateModel : ICreateCollectionModel
-        where UpdateModel : IUpdateCollectionModel
+    public class ExercisesRepository
+        : CollectionRepository<UserExerciseCollectionEntity, ExerciseCollectionItemEntity, UserExerciseCollectionModel, UserExerciseCollectionItemModel, CreateUserExerciseCollectionModel, UpdateUserExerciseCollectionModel>,
+        IExercisesRepository
     {
-        public ExercisesRepository
-        (
-            IOptions<MongoDbSettings> settings,
-            IJsonMapper mapper,
-            ILogger<CollectionRepository<Entity, CollectionItemEntity, Model, CollectionItemModel, CreateModel, UpdateModel>> log
-        )
-            : base(settings, mapper, log)
-        {
-
-        }
+        public ExercisesRepository(
+            IDbContext<UserExerciseCollectionEntity> context,
+            IMapper mapper)
+            : base(context, mapper)
+        { }
     }
 }

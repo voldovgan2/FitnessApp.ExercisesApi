@@ -1,17 +1,18 @@
-﻿using FitnessApp.ExercisesApi.Data.Entities;
+﻿using System;
+using System.Threading.Tasks;
+using FitnessApp.ExercisesApi.Data.Entities;
 using FitnessApp.ExercisesApi.Models.Input;
 using FitnessApp.ExercisesApi.Models.Output;
-using FitnessApp.ExercisesApi.Services.UserExercises;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace ExercisesApi.Data
 {
-    public class DataInitializer
+    public static class DataInitializer
     {
         public static async Task EnsureExercisesCreatedAsync(IServiceProvider serviceProvider, bool create = false, bool delete = false)
         {
+            await Task.Delay(1000);
+            /*
             using (var scope = serviceProvider.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -24,22 +25,26 @@ namespace ExercisesApi.Data
                     {
                         await service.DeleteItemAsync(userId);
                     }
+
                     if (create)
                     {
                         await service.CreateItemAsync(new CreateUserExercisesModel { UserId = userId });
                     }
                 }
+
                 var adminEmail = "admin@hotmail.com";
                 var adminId = $"ApplicationUser_{adminEmail}";
                 if (delete)
                 {
                     await service.DeleteItemAsync(adminId);
                 }
+
                 if (create)
                 {
                     await service.CreateItemAsync(new CreateUserExercisesModel { UserId = adminId });
                 }
             }
+            */
         }
     }
 }
