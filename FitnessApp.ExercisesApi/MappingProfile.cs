@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using FitnessApp.Common.Abstractions.Db.Enums.Collection;
-using FitnessApp.Common.Abstractions.Models.BlobImage;
 using FitnessApp.Common.Abstractions.Models.Collection;
+using FitnessApp.Common.Abstractions.Models.FileImage;
 using FitnessApp.Common.Mapping;
 using FitnessApp.ExercisesApi.Contracts.Input;
 using FitnessApp.ExercisesApi.Contracts.Output;
@@ -18,7 +18,7 @@ namespace FitnessApp.ExercisesApi
     {
         public MappingProfile()
         {
-            #region Contract 2 GenericBlobAggregatorModel
+            #region Contract 2 GenericFileAggregatorModel
             CreateMap<GetUserExercisesContract, GetUserExercisesFilteredCollectionItemsModel>()
                 .ForMember(m => m.CollectionName, c => c.MapFrom(c => _defaultCollectionName))
                 .AfterMap((c, m) =>
@@ -30,29 +30,29 @@ namespace FitnessApp.ExercisesApi
                             || item.Description.Contains(c.Search);
                     });
                 });
-            CreateMap<CreateUserExerciseContract, CreateUserExerciseCollectionBlobAggregatorModel>()
-                .ForMember(m => m.Collection, c => c.MapFrom(c => new Dictionary<string, IEnumerable<CreateUserExerciseCollectionBlobAggregatorModel>>
+            CreateMap<CreateUserExerciseContract, CreateUserExerciseCollectionFileAggregatorModel>()
+                .ForMember(m => m.Collection, c => c.MapFrom(c => new Dictionary<string, IEnumerable<CreateUserExerciseCollectionFileAggregatorModel>>
                 {
-                    { _defaultCollectionName, new List<CreateUserExerciseCollectionBlobAggregatorModel>() }
+                    { _defaultCollectionName, new List<CreateUserExerciseCollectionFileAggregatorModel>() }
                 }));
-            CreateMap<AddUserExerciseContract, UpdateUserExerciseCollectionBlobAggregatorModel>()
+            CreateMap<AddUserExerciseContract, UpdateUserExerciseCollectionFileAggregatorModel>()
                 .ForMember(m => m.Action, c => c.MapFrom(c => UpdateCollectionAction.Add))
                 .ForMember(m => m.CollectionName, c => c.MapFrom(c => _defaultCollectionName))
-                .ForMember(m => m.Model, c => c.MapFrom(c => ConstructUserExerciseCollectionBlobAggregatorItemModel(Guid.Empty.ToString(), c.Name, c.Calories, c.Description, c.Photo)));
-            CreateMap<UpdateUserExerciseContract, UpdateUserExerciseCollectionBlobAggregatorModel>()
+                .ForMember(m => m.Model, c => c.MapFrom(c => ConstructUserExerciseCollectionFileAggregatorItemModel(Guid.Empty.ToString(), c.Name, c.Calories, c.Description, c.Photo)));
+            CreateMap<UpdateUserExerciseContract, UpdateUserExerciseCollectionFileAggregatorModel>()
                 .ForMember(m => m.Action, c => c.MapFrom(c => UpdateCollectionAction.Update))
                 .ForMember(m => m.CollectionName, c => c.MapFrom(c => _defaultCollectionName))
-                .ForMember(m => m.Model, c => c.MapFrom(c => ConstructUserExerciseCollectionBlobAggregatorItemModel(c.Id, c.Name, c.Calories, c.Description, c.Photo)));
-            CreateMap<Tuple<string, string>, UpdateUserExerciseCollectionBlobAggregatorModel>()
+                .ForMember(m => m.Model, c => c.MapFrom(c => ConstructUserExerciseCollectionFileAggregatorItemModel(c.Id, c.Name, c.Calories, c.Description, c.Photo)));
+            CreateMap<Tuple<string, string>, UpdateUserExerciseCollectionFileAggregatorModel>()
                 .ForMember(m => m.Action, c => c.MapFrom(c => UpdateCollectionAction.Remove))
                 .ForMember(m => m.CollectionName, c => c.MapFrom(c => _defaultCollectionName))
                 .ForMember(m => m.UserId, c => c.MapFrom(c => c.Item1))
-                .ForMember(m => m.Model, c => c.MapFrom(c => ConstructUserExerciseCollectionBlobAggregatorItemModel(c.Item2, default, default, default, default)));
+                .ForMember(m => m.Model, c => c.MapFrom(c => ConstructUserExerciseCollectionFileAggregatorItemModel(c.Item2, default, default, default, default)));
             #endregion
 
-            #region CollectionBlobAggregatorModel 2 CollectionModel
-            CreateMap<CreateUserExerciseCollectionBlobAggregatorModel, CreateUserExerciseCollectionModel>();
-            CreateMap<UpdateUserExerciseCollectionBlobAggregatorModel, UpdateUserExerciseCollectionModel>()
+            #region CollectionFileAggregatorModel 2 CollectionModel
+            CreateMap<CreateUserExerciseCollectionFileAggregatorModel, CreateUserExerciseCollectionModel>();
+            CreateMap<UpdateUserExerciseCollectionFileAggregatorModel, UpdateUserExerciseCollectionModel>()
                 .ForMember(m1 => m1.Model, m2 => m2.MapFrom(m2 => m2.Model.Model));
 
             #endregion
@@ -96,8 +96,8 @@ namespace FitnessApp.ExercisesApi
                 });
             #endregion
 
-            #region CollectionBlobAggregatorModel 2 Contract
-            CreateMap<UserExerciseCollectionBlobAggregatorItemModel, ExerciseItemContract>()
+            #region CollectionFileAggregatorModel 2 Contract
+            CreateMap<UserExerciseCollectionFileAggregatorItemModel, ExerciseItemContract>()
                 .ForMember(c => c.Id, m => m.MapFrom(m => m.Model.Id))
                 .AfterMap((m, c) =>
                 {
@@ -113,33 +113,30 @@ namespace FitnessApp.ExercisesApi
 
         private readonly string _defaultCollectionName = "Exercise";
 
-        private DateTime GetDateTimeForMapping()
-        {
-            return DateTime.UtcNow;
-        }
+        private static DateTime GetDateTimeForMapping() => DateTime.UtcNow;
 
-        private UserExerciseCollectionBlobAggregatorItemModel ConstructUserExerciseCollectionBlobAggregatorItemModel(string id, string name, double calories, string description, string photo)
+        private UserExerciseCollectionFileAggregatorItemModel ConstructUserExerciseCollectionFileAggregatorItemModel(string id, string name, double calories, string description, string photo)
         {
-            return new UserExerciseCollectionBlobAggregatorItemModel
+            return new UserExerciseCollectionFileAggregatorItemModel
             {
                 Model = new UserExerciseCollectionItemModel
                 {
-                    Id = id == Guid.Empty.ToString()
-                        ? Guid.NewGuid().ToString()
+                    Id = id == Guid.Empty.ToString() ?
+                        Guid.NewGuid().ToString()
                         : id,
                     Name = name,
                     AddedDate = GetDateTimeForMapping(),
                     Calories = calories,
                     Description = description
                 },
-                Images = new List<BlobImageModel>
-                {
-                    new BlobImageModel
+                Images =
+                [
+                    new FileImageModel
                     {
                         FieldName = "Photo",
                         Value = photo
-                    }
-                }
+                    },
+                ]
             };
         }
     }

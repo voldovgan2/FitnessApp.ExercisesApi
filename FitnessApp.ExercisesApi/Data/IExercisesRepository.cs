@@ -5,7 +5,9 @@ using FitnessApp.ExercisesApi.Models.Output;
 namespace FitnessApp.ExercisesApi.Data
 {
     public interface IExercisesRepository
-        : ICollectionRepository<UserExerciseCollectionModel, UserExerciseCollectionItemModel, CreateUserExerciseCollectionModel, UpdateUserExerciseCollectionModel>
-    {
-    }
+        : ICollectionRepository<
+            UserExerciseCollectionModel,
+            UserExerciseCollectionItemModel,
+            CreateUserExerciseCollectionModel,
+            UpdateUserExerciseCollectionModel>;
 }

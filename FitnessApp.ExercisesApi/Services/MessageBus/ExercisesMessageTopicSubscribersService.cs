@@ -2,17 +2,14 @@
 using System.Threading.Tasks;
 using FitnessApp.Common.Serializer.JsonSerializer;
 using FitnessApp.Common.ServiceBus;
+using FitnessApp.Common.ServiceBus.Nats.Services;
 using FitnessApp.ExercisesApi.Models.Input;
 
 namespace FitnessApp.ExercisesApi.Services.MessageBus
 {
-    public class ExercisesMessageTopicSubscribersService : CollectionBlobAggregatorServiceNewUserRegisteredSubscriberService<CreateUserExerciseCollectionBlobAggregatorModel>
-    {
-        public ExercisesMessageTopicSubscribersService(
-            Func<CreateUserExerciseCollectionBlobAggregatorModel, Task<string>> createItemMethod,
-            string subscription,
-            IJsonSerializer serializer)
-            : base(createItemMethod, subscription, serializer)
-        { }
-    }
+    public class ExercisesMessageTopicSubscribersService(
+        IServiceBus serviceBus,
+        Func<CreateUserExerciseCollectionFileAggregatorModel, Task<string>> createItemMethod,
+        IJsonSerializer serializer)
+        : CollectionFileAggregatorServiceNewUserRegisteredSubscriberService<CreateUserExerciseCollectionFileAggregatorModel>(serviceBus, createItemMethod, serializer);
 }

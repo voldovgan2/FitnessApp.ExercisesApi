@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using FitnessApp.Common.Paged.Contracts.Output;
@@ -16,117 +15,58 @@ namespace ExercisesApi.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
 
-    // [Authorize]
-    public class ExercisesController : Controller
+    [Authorize]
+    public class ExercisesController(IUserExerciseCollectionFileAggregatorService exercisesService, IMapper mapper) : Controller
     {
-        private readonly IUserExerciseCollectionBlobAggregatorService _exercisesService;
-        private readonly IMapper _mapper;
-
-        public ExercisesController(
-            IUserExerciseCollectionBlobAggregatorService exercisesService,
-            IMapper mapper
-        )
-        {
-            _exercisesService = exercisesService;
-            _mapper = mapper;
-        }
-
         [HttpGet("GetExercises")]
-        public async Task<IActionResult> GetExercises([FromQuery] GetUserExercisesContract contract)
+        public async Task<UserExercisesContract> GetExercises([FromQuery] GetUserExercisesContract contract)
         {
-            var model = _mapper.Map<GetUserExercisesFilteredCollectionItemsModel>(contract);
-            var data = await _exercisesService.GetFilteredUserExercises(model);
-            if (data != null)
+            var model = mapper.Map<GetUserExercisesFilteredCollectionItemsModel>(contract);
+            var response = await exercisesService.GetFilteredUserExercises(model);
+            return new UserExercisesContract
             {
-                var result = new UserExercisesContract
-                {
-                    UserId = contract.UserId,
-                    Exercises = _mapper.Map<PagedDataContract<ExerciseItemContract>>(data)
-                };
-                return Ok(result);
-            }
-            else
-            {
-                return NotFound();
-            }
+                UserId = contract.UserId,
+                Exercises = mapper.Map<PagedDataContract<ExerciseItemContract>>(response)
+            };
         }
 
         [HttpPost("CreateExercises")]
-        public async Task<IActionResult> CreateExercise([FromBody] CreateUserExerciseContract contract)
+        public async Task<string> CreateExercise([FromBody] CreateUserExerciseContract contract)
         {
-            var model = _mapper.Map<CreateUserExerciseCollectionBlobAggregatorModel>(contract);
-            var created = await _exercisesService.CreateUserExercises(model);
-            if (created != null)
-            {
-                var result = created;
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var model = mapper.Map<CreateUserExerciseCollectionFileAggregatorModel>(contract);
+            var response = await exercisesService.CreateUserExercises(model);
+            return response;
         }
 
         [HttpPut("AddExercise")]
-        public async Task<IActionResult> AddExercise([FromBody] AddUserExerciseContract contract)
+        public async Task<ExerciseItemContract> AddExercise([FromBody] AddUserExerciseContract contract)
         {
-            var updateCollectionBlobAggregatorUserFoodModel = _mapper.Map<UpdateUserExerciseCollectionBlobAggregatorModel>(contract);
-            var updated = await _exercisesService.UpdateUserExercises(updateCollectionBlobAggregatorUserFoodModel);
-            if (updated != null)
-            {
-                var result = _mapper.Map<ExerciseItemContract>(updated);
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var updateCollectionFileAggregatorUserFoodModel = mapper.Map<UpdateUserExerciseCollectionFileAggregatorModel>(contract);
+            var response = await exercisesService.UpdateUserExercises(updateCollectionFileAggregatorUserFoodModel);
+            return mapper.Map<ExerciseItemContract>(response);
         }
 
         [HttpPut("EditExercise")]
-        public async Task<IActionResult> EditExercise([FromBody] UpdateUserExerciseContract contract)
+        public async Task<ExerciseItemContract> EditExercise([FromBody] UpdateUserExerciseContract contract)
         {
-            var updateCollectionBlobAggregatorUserFoodModel = _mapper.Map<UpdateUserExerciseCollectionBlobAggregatorModel>(contract);
-            var updated = await _exercisesService.UpdateUserExercises(updateCollectionBlobAggregatorUserFoodModel);
-            if (updated != null)
-            {
-                var result = _mapper.Map<ExerciseItemContract>(updated);
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var updateCollectionFileAggregatorUserFoodModel = mapper.Map<UpdateUserExerciseCollectionFileAggregatorModel>(contract);
+            var response = await exercisesService.UpdateUserExercises(updateCollectionFileAggregatorUserFoodModel);
+            return mapper.Map<ExerciseItemContract>(response);
         }
 
         [HttpDelete("RemoveExercise/{userId}/{exerciseId}")]
-        public async Task<IActionResult> RemoveExercise([FromRoute] string userId, [FromRoute] string exerciseId)
+        public async Task<string> RemoveExercise([FromRoute] string userId, [FromRoute] string exerciseId)
         {
-            var updateCollectionBlobAggregatorUserFoodModel = _mapper.Map<UpdateUserExerciseCollectionBlobAggregatorModel>(new Tuple<string, string>(userId, exerciseId));
-            var updated = await _exercisesService.UpdateUserExercises(updateCollectionBlobAggregatorUserFoodModel);
-            if (updated != null)
-            {
-                var result = updated.Model.Id;
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var updateCollectionFileAggregatorUserFoodModel = mapper.Map<UpdateUserExerciseCollectionFileAggregatorModel>(new Tuple<string, string>(userId, exerciseId));
+            var response = await exercisesService.UpdateUserExercises(updateCollectionFileAggregatorUserFoodModel);
+            return response.Model.Id;
         }
 
         [HttpDelete("DeleteExercises/{userId}")]
-        public async Task<IActionResult> DeleteExercises([FromRoute] string userId)
+        public async Task<string> DeleteExercises([FromRoute] string userId)
         {
-            var deleted = await _exercisesService.DeleteUserExercise(userId);
-            if (deleted != null)
-            {
-                return Ok(deleted);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var response = await exercisesService.DeleteUserExercise(userId);
+            return response;
         }
     }
 }

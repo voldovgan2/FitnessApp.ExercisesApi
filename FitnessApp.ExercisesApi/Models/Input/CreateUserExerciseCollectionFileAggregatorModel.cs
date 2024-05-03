@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using FitnessApp.Common.Abstractions.Models.Collection;
-using FitnessApp.Common.Abstractions.Models.CollectionBlobAggregator;
+using FitnessApp.Common.Abstractions.Models.CollectionFileAggregator;
 
 namespace FitnessApp.ExercisesApi.Models.Input
 {
-    public class CreateUserExerciseCollectionBlobAggregatorModel : ICreateCollectionBlobAggregatorModel
+    public class CreateUserExerciseCollectionFileAggregatorModel : ICreateCollectionFileAggregatorModel
     {
         public string UserId { get; set; }
         public Dictionary<string, IEnumerable<ICollectionItemModel>> Collection { get; set; }
