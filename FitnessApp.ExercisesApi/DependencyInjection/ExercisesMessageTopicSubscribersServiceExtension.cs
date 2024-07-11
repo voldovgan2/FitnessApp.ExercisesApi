@@ -1,5 +1,4 @@
 ﻿using System;
-using FitnessApp.Common.Serializer.JsonSerializer;
 using FitnessApp.Common.ServiceBus.Nats.Services;
 using FitnessApp.ExercisesApi.Services.MessageBus;
 using FitnessApp.ExercisesApi.Services.UserExerciceAggregator;
@@ -18,9 +17,7 @@ namespace FitnessApp.ExercisesApi.DependencyInjection
                 {
                     return new ExercisesMessageTopicSubscribersService(
                         sp.GetRequiredService<IServiceBus>(),
-                        sp.GetRequiredService<IUserExerciseCollectionFileAggregatorService>().CreateUserExercises,
-                        sp.GetRequiredService<IJsonSerializer>()
-                    );
+                        sp.GetRequiredService<IUserExerciseCollectionFileAggregatorService>().CreateUserExercises);
                 }
             );
 
