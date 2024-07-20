@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using FitnessApp.Common.Abstractions.Controllers;
 using FitnessApp.Common.Paged.Contracts.Output;
 using FitnessApp.ExercisesApi.Contracts.Input;
 using FitnessApp.ExercisesApi.Contracts.Output;
 using FitnessApp.ExercisesApi.Models.Input;
 using FitnessApp.ExercisesApi.Services.UserExerciceAggregator;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExercisesApi.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-[Produces("application/json")]
-
-[Authorize]
-public class ExercisesController(IUserExerciseCollectionFileAggregatorService exercisesService, IMapper mapper) : Controller
+public class ExercisesController(IUserExerciseCollectionFileAggregatorService exercisesService, IMapper mapper) : FitnessAppBaseController
 {
     [HttpGet("GetExercises")]
     public async Task<UserExercisesContract> GetExercises([FromQuery] GetUserExercisesContract contract)
