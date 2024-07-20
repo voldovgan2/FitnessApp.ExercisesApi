@@ -5,19 +5,18 @@ using FitnessApp.ExercisesApi.Services.UserExercisesCollection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FitnessApp.ExercisesApi.DependencyInjection
+namespace FitnessApp.ExercisesApi.DependencyInjection;
+
+public static class CollectionServiceExtension
 {
-    public static class CollectionServiceExtension
+    public static IServiceCollection ConfigureCollectionServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection ConfigureCollectionServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(services);
 
-            services.Configure<CollectionFileAggregatorSettings>(configuration.GetSection("CollectionFileAggregatorSettings"));
-            services.AddTransient<IUserExerciseCollectionService, UserExerciseCollectionService>();
-            services.AddTransient<IUserExerciseCollectionFileAggregatorService, UserExerciseCollectionFileAggregatorService>();
+        services.Configure<CollectionFileAggregatorSettings>(configuration.GetSection("CollectionFileAggregatorSettings"));
+        services.AddTransient<IUserExerciseCollectionService, UserExerciseCollectionService>();
+        services.AddTransient<IUserExerciseCollectionFileAggregatorService, UserExerciseCollectionFileAggregatorService>();
 
-            return services;
-        }
+        return services;
     }
 }

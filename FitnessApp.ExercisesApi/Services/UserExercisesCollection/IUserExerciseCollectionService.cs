@@ -2,12 +2,11 @@
 using FitnessApp.ExercisesApi.Models.Input;
 using FitnessApp.ExercisesApi.Models.Output;
 
-namespace FitnessApp.ExercisesApi.Services.UserExercisesCollection
-{
-    public interface IUserExerciseCollectionService
-        : ICollectionService<
-            UserExerciseCollectionModel,
-            UserExerciseCollectionItemModel,
-            CreateUserExerciseCollectionModel,
-            UpdateUserExerciseCollectionModel>;
-}
+namespace FitnessApp.ExercisesApi.Services.UserExercisesCollection;
+
+public interface IUserExerciseCollectionService :
+    ICollectionService<
+        UserExerciseCollectionModel,
+        UserExerciseCollectionItemModel,
+        CreateUserExerciseCollectionModel,
+        UpdateUserExerciseCollectionModel>;
