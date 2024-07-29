@@ -20,16 +20,7 @@ public class MappingProfile<TContract, TModel> : PagedMappingProfile<TContract, 
     {
         #region Contract 2 GenericFileAggregatorModel
         CreateMap<GetUserExercisesContract, GetUserExercisesFilteredCollectionItemsModel>()
-            .ForMember(m => m.CollectionName, c => c.MapFrom(c => _defaultCollectionName))
-            .AfterMap((c, m) =>
-            {
-                m.Predicate = new Func<UserExerciseCollectionItemModel, bool>(item =>
-                {
-                    return string.IsNullOrWhiteSpace(c.Search)
-                        || item.Name.Contains(c.Search)
-                        || item.Description.Contains(c.Search);
-                });
-            });
+            .ForMember(m => m.CollectionName, c => c.MapFrom(c => _defaultCollectionName));
         CreateMap<CreateUserExerciseContract, CreateUserExerciseCollectionFileAggregatorModel>()
             .ForMember(m => m.Collection, c => c.MapFrom(c => new Dictionary<string, IEnumerable<CreateUserExerciseCollectionFileAggregatorModel>>
             {

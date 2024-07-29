@@ -8,7 +8,7 @@ namespace FitnessApp.ExercisesApi.Services.UserExerciceAggregator;
 
 public interface IUserExerciseCollectionFileAggregatorService
 {
-    Task<PagedDataModel<UserExerciseCollectionFileAggregatorItemModel>> GetFilteredUserExercises(GetFilteredCollectionItemsModel<UserExerciseCollectionItemModel> model);
+    Task<PagedDataModel<UserExerciseCollectionFileAggregatorItemModel>> GetFilteredUserExercises(GetFilteredCollectionItemsModel model);
     Task<string> CreateUserExercises(CreateUserExerciseCollectionFileAggregatorModel model);
     Task<UserExerciseCollectionFileAggregatorItemModel> UpdateUserExercises(UpdateUserExerciseCollectionFileAggregatorModel model);
     Task<string> DeleteUserExercise(string userId);

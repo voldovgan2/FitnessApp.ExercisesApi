@@ -32,7 +32,7 @@ public class UserExerciseCollectionFileAggregatorService(
         fileAggregatorSettings.Value),
     IUserExerciseCollectionFileAggregatorService
 {
-    public Task<PagedDataModel<UserExerciseCollectionFileAggregatorItemModel>> GetFilteredUserExercises(GetFilteredCollectionItemsModel<UserExerciseCollectionItemModel> model)
+    public Task<PagedDataModel<UserExerciseCollectionFileAggregatorItemModel>> GetFilteredUserExercises(GetFilteredCollectionItemsModel model)
     {
         return GetFilteredCollectionItems(model);
     }

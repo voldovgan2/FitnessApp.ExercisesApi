@@ -2,7 +2,7 @@
 
 namespace FitnessApp.ExercisesApi.Contracts.Input;
 
-public class GetUserExercisesContract : GetPagedDataContract
+public class GetUserExercisesContract : GetPagedSearchDataContract
 {
     public string UserId { get; set; }
 }

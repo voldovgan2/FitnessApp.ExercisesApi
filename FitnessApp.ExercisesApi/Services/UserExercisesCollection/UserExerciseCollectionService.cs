@@ -6,7 +6,7 @@ using FitnessApp.ExercisesApi.Models.Output;
 namespace FitnessApp.ExercisesApi.Services.UserExercisesCollection;
 
 public class UserExerciseCollectionService(IExercisesRepository repository) :
-    CollectionService<
+    CollectionServiceWithNameAndDescription<
         UserExerciseCollectionModel,
         UserExerciseCollectionItemModel,
         CreateUserExerciseCollectionModel,
