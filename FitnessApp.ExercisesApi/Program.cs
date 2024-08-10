@@ -27,6 +27,7 @@ builder.Services.ConfigureCollectionServices(builder.Configuration);
 if ("false".Contains("true"))
     builder.Services.AddHostedService<ExercisesMessageTopicSubscribersService>();
 
+builder.Services.AddHealthChecks();
 builder.Host.ConfigureAppConfiguration();
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -38,5 +39,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health");
 app.Run();
 public partial class Program { }
